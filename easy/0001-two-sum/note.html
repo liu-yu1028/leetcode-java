@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode 1 - Two Sum</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+      line-height: 1.7;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #2563eb, #14b8a6);
+      color: white;
+      padding: 28px;
+      border-radius: 20px;
+      box-shadow: 0 14px 36px rgba(37, 99, 235, 0.25);
+    }
+    .hero h1 { margin: 0 0 8px; font-size: 34px; }
+    .hero p { margin: 0; opacity: 0.95; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    .card {
+      background: white;
+      margin-top: 22px;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+    h2 { margin-top: 0; color: #111827; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .mini {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 16px;
+    }
+    code, pre {
+      font-family: "JetBrains Mono", "Consolas", monospace;
+    }
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 18px;
+      border-radius: 14px;
+      overflow-x: auto;
+      line-height: 1.55;
+    }
+    .flow li { margin-bottom: 8px; }
+    .important {
+      border-left: 5px solid #2563eb;
+      background: #eff6ff;
+      padding: 14px 16px;
+      border-radius: 12px;
+    }
+    .warm {
+      border-left: 5px solid #14b8a6;
+      background: #ecfeff;
+      padding: 14px 16px;
+      border-radius: 12px;
+    }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+    th { background: #f3f4f6; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>LeetCode 1：Two Sum</h1>
+      <p>核心：用 HashMap 快速找到另一個需要的數字。</p>
+      <div class="badges">
+        <span class="badge">Difficulty：Easy</span>
+        <span class="badge">Type：Array</span>
+        <span class="badge">Data Structure：HashMap</span>
+        <span class="badge">Language：Java</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題目理解</h2>
+      <p>給定一個整數陣列 <code>nums</code> 和一個整數 <code>target</code>，找出兩個不同位置的數字，使它們相加等於 <code>target</code>，並回傳這兩個數字的索引。</p>
+      <div class="important">
+        注意：這題要回傳的是 <strong>index</strong>，不是數字本身。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題型分析</h2>
+      <div class="grid">
+        <div class="mini">
+          <h3>Array</h3>
+          <p>題目給定陣列，需要從左到右走訪每個元素。</p>
+        </div>
+        <div class="mini">
+          <h3>HashMap</h3>
+          <p>需要快速查找 <code>target - nums[i]</code> 是否已經出現過。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>HashMap 要存什麼？</h2>
+      <table>
+        <thead>
+          <tr><th>HashMap 欄位</th><th>這題代表的意思</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>key</td><td>數字 <code>nums[i]</code></td></tr>
+          <tr><td>value</td><td>該數字所在的索引 <code>i</code></td></tr>
+        </tbody>
+      </table>
+      <pre>{ 2 -> 0 }</pre>
+      <p>代表數字 <code>2</code> 出現在 index <code>0</code>。</p>
+    </section>
+
+    <section class="card">
+      <h2>解題流程</h2>
+      <ol class="flow">
+        <li>建立一個 HashMap，記錄「數字 → index」。</li>
+        <li>從左到右走訪 <code>nums</code>。</li>
+        <li>計算 <code>complement = target - nums[i]</code>。</li>
+        <li>檢查 map 裡是否已經有 <code>complement</code>。</li>
+        <li>如果有，回傳 <code>[map.get(complement), i]</code>。</li>
+        <li>如果沒有，把目前數字放入 map。</li>
+      </ol>
+      <div class="important">
+        記法：<strong>先查，再放</strong>。這樣可以避免同一個元素配對自己。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Java 程式碼</h2>
+      <pre><code>import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+
+        for (int i = 0; i &lt; nums.length; i++) {
+            int complement = target - nums[i];
+
+            if (map.containsKey(complement)) {
+                return new int[] { map.get(complement), i };
+            }
+
+            map.put(nums[i], i);
+        }
+
+        return new int[] {};
+    }
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>複雜度分析</h2>
+      <table>
+        <thead><tr><th>項目</th><th>複雜度</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>時間</td><td>O(n)</td><td>只走訪陣列一次，HashMap 查找平均 O(1)</td></tr>
+          <tr><td>空間</td><td>O(n)</td><td>最壞情況下 map 可能存入多個元素</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Liu 這題的卡住點</h2>
+      <div class="warm">
+        Liu 有注意到 HashMap 應該和 index 有關，這是對的。需要補精準的是：HashMap 不是只記錄 index，而是記錄「數字 → index」。因為查找時要用數字去找 complement。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>複習重點</h2>
+      <ul>
+        <li>Two Sum 的核心不是相加，而是快速查找另一個需要的數字。</li>
+        <li>HashMap 的 key 放數字，value 放 index。</li>
+        <li>看到「快速判斷某個值是否出現過」，可以考慮 HashMap。</li>
+        <li>流程要記住：先查 complement，再放入目前數字。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
