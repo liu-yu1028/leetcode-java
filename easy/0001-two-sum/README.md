@@ -45,6 +45,24 @@ map = { 2 -> 0 }
 
 代表數字 `2` 出現在 index `0`。
 
+這裡最容易混淆的是：
+
+```text
+map.get(complement)
+```
+
+拿到的不是 `complement` 這個數字本身，而是：
+
+```text
+complement 這個數字所在的 index
+```
+
+因為 HashMap 的方向是：
+
+```text
+數字 -> index
+```
+
 ## 解題思路
 
 1. 建立一個 HashMap，記錄「數字 -> index」。
@@ -89,3 +107,11 @@ map = { 2 -> 0 }
 ## 核心一句話
 
 > Two Sum 的核心不是「相加」，而是「如何快速找到另一個需要的數字」。
+
+## 本題記憶點
+
+```text
+先查 complement，再放目前數字。
+key 放數字，value 放 index。
+回傳 index，不回傳數字。
+```
