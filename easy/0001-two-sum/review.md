@@ -21,7 +21,7 @@
 
 ### 需要補強的地方
 
-一開始 Liu 說 HashMap 應該記錄 index，這個方向接近，但還不完整。
+這次主要卡在 **index 和 value 的角色**，以及 `map.get(...)` 裡面到底要放什麼。
 
 更精準的理解是：
 
@@ -39,6 +39,19 @@ map.containsKey(complement)
 
 ```text
 map.get(complement)
+```
+
+也就是說：
+
+```text
+map.get(complement) 拿到的是 complement 的 index，不是 complement 這個數字本身。
+```
+
+本題要特別記住：
+
+```text
+key = 數字
+value = index
 ```
 
 ## 下次看到類似題目要想到
