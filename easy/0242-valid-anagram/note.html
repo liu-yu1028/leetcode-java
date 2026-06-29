@@ -14,12 +14,13 @@
     .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
     .card { background: white; margin-top: 22px; padding: 24px; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); border: 1px solid #e5e7eb; }
     h2 { margin-top: 0; color: #111827; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
-    .mini { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; }
-    code, pre { font-family: "JetBrains Mono", "Consolas", monospace; }
-    pre { background: #0f172a; color: #e5e7eb; padding: 18px; border-radius: 14px; overflow-x: auto; line-height: 1.55; }
+    .solution-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .solution-card { display: block; text-decoration: none; color: inherit; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 16px; padding: 18px; transition: transform 0.12s ease, box-shadow 0.12s ease; }
+    .solution-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10); }
+    .solution-card strong { color: #7c3aed; font-size: 18px; }
     .important { border-left: 5px solid #f97316; background: #fff7ed; padding: 14px 16px; border-radius: 12px; }
     .warm { border-left: 5px solid #8b5cf6; background: #f5f3ff; padding: 14px 16px; border-radius: 12px; }
+    code { font-family: "JetBrains Mono", "Consolas", monospace; }
     table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
     th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; }
     th { background: #f3f4f6; }
@@ -29,12 +30,12 @@
   <main class="container">
     <section class="hero">
       <h1>LeetCode 242：Valid Anagram</h1>
-      <p>核心：比較兩個字串的字母出現次數。</p>
+      <p>總覽頁：這題重點是比較兩個字串的字母出現次數。</p>
       <div class="badges">
         <span class="badge">Difficulty：Easy</span>
         <span class="badge">Type：String</span>
         <span class="badge">Pattern：Counting</span>
-        <span class="badge">Data Structure：int[26]</span>
+        <span class="badge">Java</span>
       </div>
     </section>
 
@@ -45,95 +46,43 @@
     </section>
 
     <section class="card">
-      <h2>核心想法</h2>
-      <p>用一個 <code>int[26]</code> 計算小寫英文字母出現次數：</p>
-      <ul>
-        <li><code>s</code> 的字母：<strong>+1</strong></li>
-        <li><code>t</code> 的字母：<strong>-1</strong></li>
-        <li>最後全部為 <code>0</code>，代表兩邊完全抵銷。</li>
-      </ul>
-      <pre>a -> 0
-b -> 1
-c -> 2
-...
-z -> 25</pre>
+      <h2>本題解法分頁</h2>
+      <p>同一題如果有不同解法，分開成不同頁面比較好複習。這個總覽頁只保留題目核心與入口。</p>
+      <div class="solution-grid">
+        <a class="solution-card" href="./solutions/int-array.html">
+          <strong>解法一：int[26] 計數法</strong>
+          <p>適合小寫英文字母固定為 <code>a-z</code> 的情境。空間固定，寫法精簡，是目前 <code>Solution.java</code> 採用的版本。</p>
+        </a>
+        <a class="solution-card" href="./solutions/hashmap.html">
+          <strong>解法二：HashMap 計數法</strong>
+          <p>用 <code>HashMap&lt;Character, Integer&gt;</code> 記錄「字元 → 出現次數」，適合銜接前面 HashMap 觀念。</p>
+        </a>
+      </div>
     </section>
 
     <section class="card">
-      <h2>字元轉 index</h2>
-      <p>Java 可以用 <code>char - 'a'</code> 把字母轉成 0～25：</p>
+      <h2>解法比較</h2>
       <table>
-        <thead><tr><th>運算</th><th>結果</th></tr></thead>
+        <thead><tr><th>解法</th><th>優點</th><th>適合情境</th></tr></thead>
         <tbody>
-          <tr><td><code>'a' - 'a'</code></td><td>0</td></tr>
-          <tr><td><code>'b' - 'a'</code></td><td>1</td></tr>
-          <tr><td><code>'z' - 'a'</code></td><td>25</td></tr>
+          <tr><td><code>int[26]</code></td><td>簡潔、固定空間、速度快</td><td>字元範圍固定為小寫英文</td></tr>
+          <tr><td><code>HashMap</code></td><td>概念通用、能記錄任意字元次數</td><td>想練 HashMap 或字元範圍不固定</td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="card">
-      <h2>Java 程式碼</h2>
-      <pre><code>class Solution {
-    public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) {
-            return false;
-        }
-
-        int[] count = new int[26];
-
-        for (int i = 0; i &lt; s.length(); i++) {
-            count[s.charAt(i) - 'a']++;
-            count[t.charAt(i) - 'a']--;
-        }
-
-        for (int num : count) {
-            if (num != 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}</code></pre>
-    </section>
-
-    <section class="card">
-      <h2>HashMap 解法補充</h2>
-      <p>為了和前面練過的 HashMap 連起來，這題也可以用 <code>HashMap&lt;Character, Integer&gt;</code>。</p>
-      <pre><code>HashMap&lt;Character, Integer&gt; map = new HashMap&lt;&gt;();
-
-map.put(c, map.getOrDefault(c, 0) + 1); // s 的字母 +1
-map.put(c, map.getOrDefault(c, 0) - 1); // t 的字母 -1</code></pre>
-      <div class="important">
-        <strong>重點：</strong><code>getOrDefault</code> 只是拿值，不會自動更新 HashMap。要修改次數，一定要用 <code>map.put(...)</code> 存回去。
-      </div>
-      <p>最後要檢查每一個 value：</p>
-      <pre><code>for (int count : map.values()) {
-    if (count != 0) {
-        return false;
-    }
-}</code></pre>
-    </section>
-
-    <section class="card">
       <h2>Liu 這題的卡住點</h2>
       <div class="warm">
-        這題一開始容易把 Anagram 和 Palindrome 混在一起。這次要記住：Anagram 不看正反順序，而是看每個字母的出現次數。另外，<code>count</code> 是陣列，所以要逐格檢查是否為 0。
+        這題一開始容易把 Anagram 和 Palindrome 混在一起。Anagram 不看正反順序，而是看每個字母的出現次數。
         <br /><br />
-        HashMap 版本則要記住：<code>HashMap&lt;Character, Integer&gt;</code> 代表「字元 → 出現次數」；<code>getOrDefault</code> 只是拿值，真正更新要靠 <code>map.put</code>。
+        HashMap 版本要記住：<code>getOrDefault</code> 只是拿值，真正更新要靠 <code>map.put</code>。
       </div>
     </section>
 
     <section class="card">
-      <h2>複習重點</h2>
-      <ul>
-        <li>長度不同一定不是 Anagram。</li>
-        <li><code>int[] count = new int[26];</code></li>
-        <li><code>s.charAt(i) - 'a'</code> 把字母轉成陣列 index。</li>
-        <li><code>s</code> 加一，<code>t</code> 減一。</li>
-        <li>最後每一格都是 0 才回傳 true。</li>
-      </ul>
+      <h2>核心記憶</h2>
+      <p><strong>Valid Anagram：</strong>比較每個字母出現次數。次數全部相同才是 anagram。</p>
     </section>
   </main>
 </body>

@@ -120,6 +120,17 @@ for (int count : map.values()) {
 
 請見 [`Solution.java`](./Solution.java)。目前 `Solution.java` 使用較精簡的 `int[26]` 寫法；上面的 HashMap 解法是為了理解「字元 -> 次數」的延伸概念。
 
+## 解法分頁
+
+為了避免同一題不同解法混在一起，這題的可讀版筆記拆成不同頁面：
+
+| 解法 | 頁面 |
+|---|---|
+| `int[26]` 計數法 | [`solutions/int-array.html`](./solutions/int-array.html) |
+| HashMap 計數法 | [`solutions/hashmap.html`](./solutions/hashmap.html) |
+
+`note.html` 作為本題總覽頁，負責連到各個解法頁。
+
 ## 複雜度分析
 
 | 項目 | 複雜度 | 原因 |

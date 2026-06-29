@@ -142,9 +142,22 @@ t 的字母 -1
 5. 把 `count` 陣列當成單一數字檢查。
 6. 打錯 Java 關鍵字，例如 `return`。
 
+## 筆記整理方式
+
+這題開始嘗試把同一題的不同解法拆成不同 HTML 頁面：
+
+```text
+note.html                  本題總覽
+solutions/int-array.html   int[26] 計數法
+solutions/hashmap.html     HashMap 計數法
+```
+
+這樣之後複習時，可以先看總覽，再進入單一解法頁，不會把不同解法混在一起。
+
 ## 複習問題
 
 1. Anagram 和 Palindrome 差在哪裡？
 2. 為什麼長度不同可以直接回傳 `false`？
 3. `s.charAt(i) - 'a'` 的作用是什麼？
 4. 為什麼最後要檢查 `count` 每一格是不是 0？
+5. HashMap 版本中，為什麼 `getOrDefault(...) + 1` 還需要搭配 `map.put(...)`？
