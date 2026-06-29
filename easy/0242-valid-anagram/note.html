@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode 242 - Valid Anagram</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Arial, sans-serif; background: #f5f7fb; color: #1f2937; line-height: 1.7; }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero { background: linear-gradient(135deg, #f97316, #8b5cf6); color: white; padding: 28px; border-radius: 20px; box-shadow: 0 14px 36px rgba(249, 115, 22, 0.22); }
+    .hero h1 { margin: 0 0 8px; font-size: 34px; }
+    .hero p { margin: 0; opacity: 0.95; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+    .card { background: white; margin-top: 22px; padding: 24px; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); border: 1px solid #e5e7eb; }
+    h2 { margin-top: 0; color: #111827; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+    .mini { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; }
+    code, pre { font-family: "JetBrains Mono", "Consolas", monospace; }
+    pre { background: #0f172a; color: #e5e7eb; padding: 18px; border-radius: 14px; overflow-x: auto; line-height: 1.55; }
+    .important { border-left: 5px solid #f97316; background: #fff7ed; padding: 14px 16px; border-radius: 12px; }
+    .warm { border-left: 5px solid #8b5cf6; background: #f5f3ff; padding: 14px 16px; border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+    th { background: #f3f4f6; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>LeetCode 242：Valid Anagram</h1>
+      <p>核心：比較兩個字串的字母出現次數。</p>
+      <div class="badges">
+        <span class="badge">Difficulty：Easy</span>
+        <span class="badge">Type：String</span>
+        <span class="badge">Pattern：Counting</span>
+        <span class="badge">Data Structure：int[26]</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題目理解</h2>
+      <p>判斷兩個字串 <code>s</code> 和 <code>t</code> 是否由相同字母與相同次數組成。順序可以不同。</p>
+      <div class="important">Anagram 不是回文。回文看順序，Anagram 看字母種類和次數。</div>
+    </section>
+
+    <section class="card">
+      <h2>核心想法</h2>
+      <p>用一個 <code>int[26]</code> 計算小寫英文字母出現次數：</p>
+      <ul>
+        <li><code>s</code> 的字母：<strong>+1</strong></li>
+        <li><code>t</code> 的字母：<strong>-1</strong></li>
+        <li>最後全部為 <code>0</code>，代表兩邊完全抵銷。</li>
+      </ul>
+      <pre>a -> 0
+b -> 1
+c -> 2
+...
+z -> 25</pre>
+    </section>
+
+    <section class="card">
+      <h2>字元轉 index</h2>
+      <p>Java 可以用 <code>char - 'a'</code> 把字母轉成 0～25：</p>
+      <table>
+        <thead><tr><th>運算</th><th>結果</th></tr></thead>
+        <tbody>
+          <tr><td><code>'a' - 'a'</code></td><td>0</td></tr>
+          <tr><td><code>'b' - 'a'</code></td><td>1</td></tr>
+          <tr><td><code>'z' - 'a'</code></td><td>25</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Java 程式碼</h2>
+      <pre><code>class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        int[] count = new int[26];
+
+        for (int i = 0; i &lt; s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+            count[t.charAt(i) - 'a']--;
+        }
+
+        for (int num : count) {
+            if (num != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Liu 這題的卡住點</h2>
+      <div class="warm">
+        這題一開始容易把 Anagram 和 Palindrome 混在一起。這次要記住：Anagram 不看正反順序，而是看每個字母的出現次數。另外，<code>count</code> 是陣列，所以要逐格檢查是否為 0。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>複習重點</h2>
+      <ul>
+        <li>長度不同一定不是 Anagram。</li>
+        <li><code>int[] count = new int[26];</code></li>
+        <li><code>s.charAt(i) - 'a'</code> 把字母轉成陣列 index。</li>
+        <li><code>s</code> 加一，<code>t</code> 減一。</li>
+        <li>最後每一格都是 0 才回傳 true。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
