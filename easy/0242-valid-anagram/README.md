@@ -67,9 +67,58 @@ s.charAt(i) - 'a'
 5. 只要有任一格不是 `0`，回傳 `false`。
 6. 全部都是 `0`，回傳 `true`。
 
+## HashMap 解法補充
+
+為了銜接前面練過的 HashMap，也可以用 `HashMap<Character, Integer>` 解這題。
+
+這時候 HashMap 存的是：
+
+```text
+字元 -> 出現次數
+```
+
+例如：
+
+```text
+'a' -> 2
+'b' -> 1
+```
+
+流程一樣是抵銷：
+
+```java
+map.put(c, map.getOrDefault(c, 0) + 1); // s 的字母 +1
+map.put(c, map.getOrDefault(c, 0) - 1); // t 的字母 -1
+```
+
+要注意：
+
+```java
+map.getOrDefault(c, 0) + 1;
+```
+
+這行只是算出新的數字，**不會自動更新 map**。  
+如果要真的改變 HashMap，必須用：
+
+```java
+map.put(c, map.getOrDefault(c, 0) + 1);
+```
+
+最後要檢查所有 value：
+
+```java
+for (int count : map.values()) {
+    if (count != 0) {
+        return false;
+    }
+}
+```
+
+`map.values()` 是一整個集合，不能直接拿來跟 `0` 比。
+
 ## Java 程式碼
 
-請見 [`Solution.java`](./Solution.java)。
+請見 [`Solution.java`](./Solution.java)。目前 `Solution.java` 使用較精簡的 `int[26]` 寫法；上面的 HashMap 解法是為了理解「字元 -> 次數」的延伸概念。
 
 ## 複雜度分析
 

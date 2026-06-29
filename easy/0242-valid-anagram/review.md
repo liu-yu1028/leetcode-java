@@ -79,14 +79,58 @@ for (int num : count) {
 }
 ```
 
+#### 5. HashMap 解法的卡住點
+
+為了和前面的 HashMap 題目連貫，也可以用：
+
+```java
+HashMap<Character, Integer> map = new HashMap<>();
+```
+
+這裡的意思是：
+
+```text
+字元 -> 出現次數
+```
+
+這次 HashMap 版本主要卡在三個地方：
+
+1. `Character` 拼字要完整，不能寫成 `Characte`。
+2. `getOrDefault(...) + 1` 只是算出新值，不會自動更新 map。
+3. `map.values()` 是一整個集合，不能直接寫 `map.values() == 0`。
+
+正確更新次數要寫：
+
+```java
+map.put(c, map.getOrDefault(c, 0) + 1);
+map.put(c, map.getOrDefault(c, 0) - 1);
+```
+
+正確檢查所有次數要寫：
+
+```java
+for (int count : map.values()) {
+    if (count != 0) {
+        return false;
+    }
+}
+```
+
+這題要記住：
+
+```text
+getOrDefault 只是拿值。
+要修改 HashMap，一定要用 put 存回去。
+```
+
 ## 關鍵流程
 
 ```text
 長度不同：return false
-建立 count[26]
+建立 count[26] 或 HashMap<Character, Integer>
 s 的字母 +1
 t 的字母 -1
-檢查 count 是否全部為 0
+檢查所有次數是否全部為 0
 ```
 
 ## 容易犯的錯

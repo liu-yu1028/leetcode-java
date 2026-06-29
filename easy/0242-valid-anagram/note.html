@@ -99,9 +99,29 @@ z -> 25</pre>
     </section>
 
     <section class="card">
+      <h2>HashMap 解法補充</h2>
+      <p>為了和前面練過的 HashMap 連起來，這題也可以用 <code>HashMap&lt;Character, Integer&gt;</code>。</p>
+      <pre><code>HashMap&lt;Character, Integer&gt; map = new HashMap&lt;&gt;();
+
+map.put(c, map.getOrDefault(c, 0) + 1); // s 的字母 +1
+map.put(c, map.getOrDefault(c, 0) - 1); // t 的字母 -1</code></pre>
+      <div class="important">
+        <strong>重點：</strong><code>getOrDefault</code> 只是拿值，不會自動更新 HashMap。要修改次數，一定要用 <code>map.put(...)</code> 存回去。
+      </div>
+      <p>最後要檢查每一個 value：</p>
+      <pre><code>for (int count : map.values()) {
+    if (count != 0) {
+        return false;
+    }
+}</code></pre>
+    </section>
+
+    <section class="card">
       <h2>Liu 這題的卡住點</h2>
       <div class="warm">
         這題一開始容易把 Anagram 和 Palindrome 混在一起。這次要記住：Anagram 不看正反順序，而是看每個字母的出現次數。另外，<code>count</code> 是陣列，所以要逐格檢查是否為 0。
+        <br /><br />
+        HashMap 版本則要記住：<code>HashMap&lt;Character, Integer&gt;</code> 代表「字元 → 出現次數」；<code>getOrDefault</code> 只是拿值，真正更新要靠 <code>map.put</code>。
       </div>
     </section>
 
