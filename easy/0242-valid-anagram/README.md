@@ -7,6 +7,18 @@
 - 難度：Easy
 - 題目連結：https://leetcode.com/problems/valid-anagram/
 
+## 筆記介紹
+
+這份筆記整理 **242. Valid Anagram** 的學習過程。這題的核心是判斷兩個字串是否擁有相同的字母種類與出現次數。
+
+為了讓不同解法更容易比較，這題採用「總覽 + 解法分頁」的整理方式：
+
+- `note.html`：題目總覽與解法入口。
+- `solutions/int-array.html`：使用 `int[26]` 的主要解法。
+- `solutions/hashmap.html`：使用 `HashMap<Character, Integer>` 的延伸解法。
+
+`Solution.java` 保留目前較推薦、較精簡的 `int[26]` 版本；HashMap 版本則作為理解「字元 -> 出現次數」的補充。
+
 ## 題目理解
 
 給定兩個字串 `s` 和 `t`，判斷 `t` 是否為 `s` 的 anagram。
