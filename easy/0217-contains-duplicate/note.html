@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode 217 - Contains Duplicate</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+      line-height: 1.7;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero {
+      background: linear-gradient(135deg, #7c3aed, #06b6d4);
+      color: white;
+      padding: 28px;
+      border-radius: 20px;
+      box-shadow: 0 14px 36px rgba(124, 58, 237, 0.22);
+    }
+    .hero h1 { margin: 0 0 8px; font-size: 34px; }
+    .hero p { margin: 0; opacity: 0.95; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    .card {
+      background: white;
+      margin-top: 22px;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+    h2 { margin-top: 0; color: #111827; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+    .mini { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; }
+    code, pre { font-family: "JetBrains Mono", "Consolas", monospace; }
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 18px;
+      border-radius: 14px;
+      overflow-x: auto;
+      line-height: 1.55;
+    }
+    .flow li { margin-bottom: 8px; }
+    .important { border-left: 5px solid #7c3aed; background: #f5f3ff; padding: 14px 16px; border-radius: 12px; }
+    .warm { border-left: 5px solid #06b6d4; background: #ecfeff; padding: 14px 16px; border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+    th { background: #f3f4f6; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>LeetCode 217：Contains Duplicate</h1>
+      <p>核心：用 HashSet 記錄看過的數字，快速判斷是否重複。</p>
+      <div class="badges">
+        <span class="badge">Difficulty：Easy</span>
+        <span class="badge">Type：Array</span>
+        <span class="badge">Data Structure：HashSet</span>
+        <span class="badge">Language：Java</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題目理解</h2>
+      <p>給定一個整數陣列 <code>nums</code>，如果任一數字出現至少兩次，回傳 <code>true</code>；如果每個數字都只出現一次，回傳 <code>false</code>。</p>
+      <div class="important">
+        注意：這題只問 <strong>有沒有重複</strong>，不問重複的位置，所以不用存 index。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題型分析</h2>
+      <div class="grid">
+        <div class="mini">
+          <h3>Array</h3>
+          <p>題目給定陣列，需要走訪每個數字。</p>
+        </div>
+        <div class="mini">
+          <h3>HashSet</h3>
+          <p>需要快速判斷目前數字以前是否出現過。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>從暴力法到 HashSet</h2>
+      <p>暴力法會固定一個數字，再往後檢查是否有相同數字，因此需要兩層迴圈。</p>
+      <table>
+        <thead><tr><th>方法</th><th>時間</th><th>想法</th></tr></thead>
+        <tbody>
+          <tr><td>暴力法</td><td>O(n²)</td><td>每個數字都和後面的數字比較</td></tr>
+          <tr><td>HashSet</td><td>O(n)</td><td>用 set 快速查目前數字以前有沒有出現過</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>HashSet 要存什麼？</h2>
+      <table>
+        <thead><tr><th>資料結構</th><th>這題代表的意思</th></tr></thead>
+        <tbody>
+          <tr><td><code>HashSet&lt;Integer&gt;</code></td><td>已經出現過的數字</td></tr>
+        </tbody>
+      </table>
+      <pre>set = [1, 2, 3]</pre>
+      <p>代表 <code>1</code>、<code>2</code>、<code>3</code> 都已經看過。</p>
+      <div class="important">
+        <strong>容易混淆點：</strong><code>HashSet</code> 只存元素本身，所以是 <code>HashSet&lt;Integer&gt;</code>，不是 <code>HashSet&lt;Integer, Integer&gt;</code>。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>解題流程</h2>
+      <ol class="flow">
+        <li>建立一個 <code>HashSet&lt;Integer&gt;</code>。</li>
+        <li>用 <code>for (int num : nums)</code> 走訪每個數字。</li>
+        <li>如果 <code>set.contains(num)</code>，代表以前看過，回傳 <code>true</code>。</li>
+        <li>如果沒看過，就用 <code>set.add(num)</code> 記錄目前數字。</li>
+        <li>全部走完都沒重複，回傳 <code>false</code>。</li>
+      </ol>
+      <div class="important">
+        記法：<strong>看過就 true，沒看過就 add，最後 false。</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Java 程式碼</h2>
+      <pre><code>import java.util.HashSet;
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        HashSet&lt;Integer&gt; set = new HashSet&lt;&gt;();
+
+        for (int num : nums) {
+            if (set.contains(num)) {
+                return true;
+            }
+
+            set.add(num);
+        }
+
+        return false;
+    }
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>複雜度分析</h2>
+      <table>
+        <thead><tr><th>項目</th><th>複雜度</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>時間</td><td>O(n)</td><td>只走訪陣列一次，HashSet 查找平均 O(1)</td></tr>
+          <tr><td>空間</td><td>O(n)</td><td>最壞情況下所有數字都不重複，set 會存入 n 個元素</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Liu 這題的卡住點</h2>
+      <div class="warm">
+        Liu 的解題方向是對的：因為答案只需要 boolean，所以只需要存「出現過的數字」。這次需要補強的是 Java 語法：<code>HashSet&lt;Integer&gt;</code> 只放一個型別，加入元素用 <code>set.add(num)</code>，不是 <code>set.push(num)</code>。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>複習重點</h2>
+      <ul>
+        <li>題目只問有沒有重複，所以不用 index。</li>
+        <li><code>HashSet</code> 適合快速判斷某個值是否出現過。</li>
+        <li><code>set.contains(num)</code>：檢查是否看過。</li>
+        <li><code>set.add(num)</code>：記錄目前數字。</li>
+        <li>看到「不需要位置，只需要是否出現」時，可以先想到 HashSet。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
