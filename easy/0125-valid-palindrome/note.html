@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode 125 - Valid Palindrome</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Arial, sans-serif; background: #f6f8fb; color: #1f2937; line-height: 1.75; }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero { background: linear-gradient(135deg, #0ea5e9, #6366f1); color: white; padding: 28px; border-radius: 20px; box-shadow: 0 14px 36px rgba(14, 165, 233, 0.22); }
+    .hero h1 { margin: 0 0 8px; font-size: 34px; }
+    .hero p { margin: 0; opacity: 0.95; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+    .card { background: white; margin-top: 22px; padding: 24px; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); border: 1px solid #e5e7eb; }
+    h2 { margin-top: 0; color: #111827; }
+    code, pre { font-family: "JetBrains Mono", "Consolas", monospace; }
+    pre { background: #0f172a; color: #e5e7eb; padding: 18px; border-radius: 14px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    .important { border-left: 5px solid #0ea5e9; background: #eff6ff; padding: 14px 16px; border-radius: 12px; }
+    .warn { border-left: 5px solid #f97316; background: #fff7ed; padding: 14px 16px; border-radius: 12px; }
+    .steps li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>LeetCode 125：Valid Palindrome</h1>
+      <p>用左右指標判斷字串在忽略雜訊後是否前後對稱。</p>
+      <div class="badges">
+        <span class="badge">Difficulty：Easy</span>
+        <span class="badge">Type：String</span>
+        <span class="badge">Pattern：Two Pointers</span>
+        <span class="badge">Space：O(1)</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題目理解</h2>
+      <p>判斷字串是否為回文，但只看英文字母和數字，並且大小寫視為相同。</p>
+      <div class="important">
+        <strong>核心規則：</strong>空格、逗號、冒號等非英數字元不是錯誤，而是要被忽略的雜訊。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>為什麼是 Two Pointers？</h2>
+      <table>
+        <thead><tr><th>觀察</th><th>對應策略</th></tr></thead>
+        <tbody>
+          <tr><td>回文要比較左右是否對稱</td><td>一個指標從左邊走，一個從右邊走</td></tr>
+          <tr><td>遇到非英數字元要忽略</td><td>指到雜訊的那一邊單獨移動</td></tr>
+          <tr><td>大小寫不影響答案</td><td>比較前使用 <code>Character.toLowerCase</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>步驟流程</h2>
+      <ol class="steps">
+        <li>設定 <code>left = 0</code>、<code>right = s.length() - 1</code>。</li>
+        <li>如果左邊不是英數字元，<code>left++</code> 並重新進入下一輪。</li>
+        <li>如果右邊不是英數字元，<code>right--</code> 並重新進入下一輪。</li>
+        <li>兩邊都是有效字元時，轉小寫後比較。</li>
+        <li>不同就回傳 <code>false</code>；相同就繼續往中間走。</li>
+        <li>全部比較完都沒有失敗，回傳 <code>true</code>。</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Java 解法</h2>
+      <pre><code>class Solution {
+    public boolean isPalindrome(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left &lt; right) {
+            char leftChar = s.charAt(left);
+            char rightChar = s.charAt(right);
+
+            if (!Character.isLetterOrDigit(leftChar)) {
+                left++;
+                continue;
+            }
+
+            if (!Character.isLetterOrDigit(rightChar)) {
+                right--;
+                continue;
+            }
+
+            if (Character.toLowerCase(leftChar) != Character.toLowerCase(rightChar)) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Liu 這題的卡住點</h2>
+      <div class="warn">
+        一開始把「非英數字元」想成不合法，所以想寫 <code>return false</code>。<br />
+        但本題規則是忽略它們：非英數不是錯，是雜訊。真正會讓答案變 <code>false</code> 的，是左右兩個「有效字元」不同。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>核心記憶</h2>
+      <p><strong>Valid Palindrome：</strong>左右指標往中間走，遇到雜訊跳過，遇到有效字元才轉小寫後比較。</p>
+    </section>
+
+    <section class="card">
+      <h2>複習 Checklist</h2>
+      <ul>
+        <li>我知道為什麼空格不能直接讓答案變 <code>false</code>。</li>
+        <li>我知道 <code>Character.isLetterOrDigit</code> 是用來過濾有效字元。</li>
+        <li>我知道比較前要用 <code>Character.toLowerCase</code> 處理大小寫。</li>
+        <li>我知道這題可以不用建立新字串，所以空間是 <code>O(1)</code>。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
