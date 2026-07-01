@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode 121 - Best Time to Buy and Sell Stock</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Arial, sans-serif; background: #f5f7fb; color: #1f2937; line-height: 1.75; }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero { background: linear-gradient(135deg, #10b981, #0ea5e9); color: white; padding: 28px; border-radius: 20px; box-shadow: 0 14px 36px rgba(16, 185, 129, 0.22); }
+    .hero h1 { margin: 0 0 8px; font-size: 34px; }
+    .hero p { margin: 0; opacity: 0.95; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+    .card { background: white; margin-top: 22px; padding: 24px; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); border: 1px solid #e5e7eb; }
+    h2 { margin-top: 0; color: #111827; }
+    code, pre { font-family: "JetBrains Mono", "Consolas", monospace; }
+    pre { background: #0f172a; color: #e5e7eb; padding: 18px; border-radius: 14px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    .important { border-left: 5px solid #10b981; background: #ecfdf5; padding: 14px 16px; border-radius: 12px; }
+    .warn { border-left: 5px solid #f97316; background: #fff7ed; padding: 14px 16px; border-radius: 12px; }
+    .steps li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>LeetCode 121：Best Time to Buy and Sell Stock</h1>
+      <p>一邊走陣列，一邊記錄目前最低買入價與最大利潤。</p>
+      <div class="badges">
+        <span class="badge">Difficulty：Easy</span>
+        <span class="badge">Type：Array</span>
+        <span class="badge">Pattern：Greedy</span>
+        <span class="badge">One Pass</span>
+        <span class="badge">Space：O(1)</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>題目理解</h2>
+      <p>給定每天的股票價格，只能做一次買賣，且必須先買再賣。目標是找出最大利潤；如果無法獲利，回傳 <code>0</code>。</p>
+      <div class="important">
+        <strong>核心限制：</strong>走到某一天時，只能用以前看過的價格當買入價，不能偷看未來。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>變數角色</h2>
+      <table>
+        <thead><tr><th>變數</th><th>意思</th><th>更新方式</th></tr></thead>
+        <tbody>
+          <tr><td><code>price</code></td><td>今天的價格</td><td>for loop 每次取得</td></tr>
+          <tr><td><code>minPrice</code></td><td>目前看過最低價格</td><td><code>Math.min(minPrice, price)</code></td></tr>
+          <tr><td><code>profit</code></td><td>如果今天賣出能賺多少</td><td><code>price - minPrice</code></td></tr>
+          <tr><td><code>maxProfit</code></td><td>目前最大利潤</td><td><code>Math.max(maxProfit, profit)</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Trace 範例</h2>
+      <p><code>prices = [7, 1, 5, 3, 6, 4]</code></p>
+      <table>
+        <thead><tr><th>price</th><th>profit = price - minPrice</th><th>minPrice</th><th>maxProfit</th></tr></thead>
+        <tbody>
+          <tr><td>7</td><td>0</td><td>7</td><td>0</td></tr>
+          <tr><td>1</td><td>-6</td><td>1</td><td>0</td></tr>
+          <tr><td>5</td><td>4</td><td>1</td><td>4</td></tr>
+          <tr><td>3</td><td>2</td><td>1</td><td>4</td></tr>
+          <tr><td>6</td><td>5</td><td>1</td><td>5</td></tr>
+          <tr><td>4</td><td>3</td><td>1</td><td>5</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Java 解法</h2>
+      <pre><code>class Solution {
+    public int maxProfit(int[] prices) {
+        int minPrice = prices[0];
+        int maxProfit = 0;
+
+        for (int price : prices) {
+            int profit = price - minPrice;
+            maxProfit = Math.max(maxProfit, profit);
+            minPrice = Math.min(minPrice, price);
+        }
+
+        return maxProfit;
+    }
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Liu 這題的卡住點</h2>
+      <div class="warn">
+        要把「價格」和「利潤」分清楚：<br />
+        <code>minPrice</code> 是目前最低價格；<code>maxProfit</code> 是目前最大利潤。<br /><br />
+        所以更新最低價格時，要比較 <code>minPrice</code> 和 <code>price</code>，不是比較 <code>profit</code> 和 <code>maxProfit</code>。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>核心記憶</h2>
+      <p><strong>Best Time to Buy and Sell Stock：</strong>每天假設今天賣出，用目前看過最低價格計算利潤，持續更新最大利潤。</p>
+    </section>
+
+    <section class="card">
+      <h2>複習 Checklist</h2>
+      <ul>
+        <li>我知道買入日必須早於賣出日。</li>
+        <li>我知道 <code>profit = price - minPrice</code>。</li>
+        <li>我知道 <code>minPrice</code> 是價格，<code>maxProfit</code> 是利潤。</li>
+        <li>我知道不能獲利時答案是 <code>0</code>。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
